@@ -24,4 +24,8 @@ body {
 .action-icons:hover{
   cursor:pointer
 }
+.cart{
+  display: flex;
+  justify-content: space-around;
+}
 

@@ -1,17 +1,17 @@
 import React from "react";
 
 class CartItem extends React.Component{
-    constructor (){
-        super();
-        this.state = {
-            title : 'Mobile Phone',
-            price : 999,
-            qty : 0,
-            img : ''
+    // constructor (){
+    //     super();
+    //     this.state = {
+    //         title : 'Mobile Phone',
+    //         price : 999,
+    //         qty : 0,
+    //         img : ''
 
-        }        
-        //this.testing();
-    }
+    //     }        
+    //     //this.testing();
+    // }
     increasefunc = () => {// as doubt
         // this.state.qty++;
         //console.log(this.state);
@@ -55,10 +55,12 @@ class CartItem extends React.Component{
     
     render(){        
         // if i place a this.testing here why the page is rendering again and again
-        let {price, title, qty} = this.state;
-        
+        //let {price, title, qty} = this.state;
+        let {price, title, qty} = this.props.product;
+        console.log('this.props ',this.props);
         return (
             <div className="cart-item">
+                {this.props.jsx}
                 <div className="left-block">
                     <img style={styles.image}/>
                 </div>
