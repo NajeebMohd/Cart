@@ -28,4 +28,7 @@ body {
   display: flex;
   justify-content: space-around;
 }
-
+.navbar-icon{
+  height: 50px;
+  width: 50px;
+}
