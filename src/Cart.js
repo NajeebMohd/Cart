@@ -31,6 +31,27 @@ class Cart extends React.Component{
 
         }          
     }
+    increaseQuantity = (product) => {
+        const products = this.state.products;
+        const index = products.indexOf(product);
+
+        products[index].qty += 1;
+
+        this.setState({
+            products
+        })
+
+    }
+    decreaseQuantity = (product) => {
+        const products = this.state.products;
+        const index = products.indexOf(product);
+
+        if(products[index].qty == 0) return;
+        products[index].qty -= 1;
+        this.setState({
+            products
+        })
+    }
     render(){
         const products = this.state.products;
         return (
@@ -40,9 +61,8 @@ class Cart extends React.Component{
                     < CartItem 
                         product = {product}
                         key = {product.key}
-                        func = {console.log('bla')}// why this is running while page is rendered
-                        jsx = {<h1>Sold Out!</h1>}
-                        
+                        increaseQuantity = {this.increaseQuantity} 
+                        decreaseQuantity = {this.decreaseQuantity}                       
                     />
                    );
                 })}               

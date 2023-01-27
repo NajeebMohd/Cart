@@ -12,6 +12,8 @@ class CartItem extends React.Component{
     //     }        
     //     //this.testing();
     // }
+
+
     increasefunc = () => {// as doubt
         // this.state.qty++;
         //console.log(this.state);
@@ -28,30 +30,31 @@ class CartItem extends React.Component{
         
         //console.log(this.state);
     }
-    decreasefunc = () => {
-        if(this.state.qty == 0) return;
-        this.setState((prevState) => {
-            return {
-                qty : prevState.qty - 1
-            }
-        });
-        
-    }
-    testing (){
-        const promise = new Promise((resolve,reject) => {
-            setTimeout(() => {
-                resolve('done');
-            },5000);
-        })
 
-        promise.then(() => {
-            this.setState({qty:this.state.qty + 1});
-            this.setState({qty:this.state.qty + 1});
-            this.setState({qty:this.state.qty + 1});
+    // decreasefunc = () => {
+    //     if(this.state.qty == 0) return;
+    //     this.setState((prevState) => {
+    //         return {
+    //             qty : prevState.qty - 1
+    //         }
+    //     });        
+    // }
+
+    // testing (){
+    //     const promise = new Promise((resolve,reject) => {
+    //         setTimeout(() => {
+    //             resolve('done');
+    //         },5000);
+    //     })
+
+    //     promise.then(() => {
+    //         this.setState({qty:this.state.qty + 1});
+    //         this.setState({qty:this.state.qty + 1});
+    //         this.setState({qty:this.state.qty + 1});
              
-            console.log('this state', this.state);
-        })
-    }
+    //         console.log('this state', this.state);
+    //     })
+    // }
     
     render(){        
         // if i place a this.testing here why the page is rendering again and again
@@ -61,6 +64,7 @@ class CartItem extends React.Component{
         return (
             <div className="cart-item">
                 {this.props.jsx}
+               
                 <div className="left-block">
                     <img style={styles.image}/>
                 </div>
@@ -68,15 +72,29 @@ class CartItem extends React.Component{
                     <div style={{fontSize:25}}>{title}</div>
                     <div style={{color:'#777'}}>Price: {price}</div>
                     <div style={{color:'#777'}}>Qty: {qty}</div>
-                    <div className="cart-item-actions">
-                        {/* buttons */}
-                        <img alt="increase" onClick={this.increasefunc} className="action-icons" src="https://cdn-icons-png.flaticon.com/512/3303/3303893.png"/>
-                        <img alt="decrease" onClick={this.decreasefunc} className="action-icons" src="https://cdn-icons-png.flaticon.com/512/992/992683.png"/>
-                        <img alt="delete" className="action-icons" src="https://cdn-icons-png.flaticon.com/512/458/458594.png"/>
+                    <div className="cart-item-actions">                        
+                        <img 
+                            alt="increase" 
+                            onClick={() => this.props.increaseQuantity(this.props.product)} 
+                            className="action-icons" 
+                            src="https://cdn-icons-png.flaticon.com/512/3303/3303893.png"
+                        />
+                        <img 
+                            alt="decrease" 
+                            onClick={() => this.props.decreaseQuantity(this.props.product)} 
+                            className="action-icons" 
+                            src="https://cdn-icons-png.flaticon.com/512/992/992683.png"
+                        />
+                        <img 
+                            alt="delete" 
+                            className="action-icons" 
+                            src="https://cdn-icons-png.flaticon.com/512/458/458594.png"
+                        />
                     </div>
                     
                     
                 </div>
+                
             </div>
         );
     }
