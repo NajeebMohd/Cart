@@ -9,13 +9,16 @@ class App extends React.Component{
     this.state = {
       products : [],
       loading : true
-    }          
+    }     
+    this.db = firebase.firestore();     
   }
   componentDidMount(){
-    firebase
-      .firestore()
+    this.db
       .collection('products')
       //.get()
+      // .where('price','>',50)
+      // .where('title','==','Mobile')
+      .orderBy('price','desc')
       .onSnapshot((snapshot) => {// we are using .onSnapshot instead of .then because if there is changes in the firestore react should automaically listen to onSnapshot again.
         //console.log(snapshot," this is it ");
         // snapshot.docs.map((doc) => {
@@ -37,11 +40,22 @@ class App extends React.Component{
     const products = this.state.products;
     const index = products.indexOf(product);
 
-    products[index].qty += 1;
+    // products[index].qty += 1;
 
-    this.setState({
-        products
-    })
+    // this.setState({
+    //     products
+    // })
+    const docRef = this.db.collection('products').doc(products[index].id);
+    docRef
+      .update({
+        qty : products[index].qty + 1
+      })
+      .then(() => {
+        console.log('updated successfully');
+      })
+      .catch((err) => {
+        console.log('the error is -> ',err);
+      })
 
   }
   decreaseQuantity = (product) => {
@@ -49,19 +63,39 @@ class App extends React.Component{
     const index = products.indexOf(product);
 
     if(products[index].qty == 0) return;
-    products[index].qty -= 1;
-    this.setState({
-        products
-    })
+    // products[index].qty -= 1;
+    // this.setState({
+    //     products
+    // })
+    const docRef = this.db.collection('products').doc(products[index].id);
+    docRef
+      .update({
+        qty : products[index].qty - 1
+      })
+      .then(() => {
+        console.log('updated successfully');
+      })
+      .catch((err) => {
+        console.log('the error is -> ',err);
+      })
   }
   deleteItem = (product) => {
     const products = this.state.products;
     const index = products.indexOf(product);
 
-    delete products[index];
-    this.setState({
-        products
-    })
+    // delete products[index];
+    // this.setState({
+    //     products
+    // })
+    const docRef = this.db.collection('products').doc(products[index].id);
+    docRef
+      .delete()
+      .then(() => {
+        console.log('deleted successfully');
+      })
+      .catch((err) => {
+        console.log('the error is -> ',err);
+      })
     // another way is that we are taking id in the arguments and with that id we will remove the product
     // but try this out its not working
     // const id = products[index].key;
@@ -87,6 +121,22 @@ class App extends React.Component{
     });
     return total;
   }
+  addProduct = () => {
+    this.db
+      .collection('products')
+      .add({
+        img : '',
+        price : 53,
+        qty : 3,
+        title : 'washing machine'        
+      })
+      .then((docRef) => {
+        console.log(docRef);
+      })
+      .catch((error) => {
+        console.log(error," the error");
+      })
+  }
 
   render(){
     const {products, loading} = this.state;
@@ -95,6 +145,7 @@ class App extends React.Component{
         < Navbar
           quantity = {this.totalitems} 
         />
+        <button onClick={this.addProduct} style = {{padding : 20, fontSize : 20}}>Add a product</button>
         <h1>Cart</h1>
         < Cart
           products = {products}

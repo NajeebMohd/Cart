@@ -25,8 +25,13 @@ body {
   cursor:pointer
 }
 .cart{
+  width: 80%;
+  
+  height: auto;  
   display: flex;
+  flex-direction: column;
   justify-content: space-around;
+  
 }
 .navbar-icon{
   height: 50px;
