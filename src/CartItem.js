@@ -62,7 +62,7 @@ const CartItem = (props) => {
     let {price, title, qty,img} = props.product;
     const {product,increaseQuantity,decreaseQuantity,deleteItem} = props;
     
-    console.log('this.props ',props);
+    //console.log('this.props ',props);
     return (
         <div className="cart-item">           
             

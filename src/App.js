@@ -1,36 +1,37 @@
 import React from 'react';
 import Cart from './Cart';
 import Navbar from './Navbar';
+import firebase from 'firebase';
 
 class App extends React.Component{
   constructor (){
     super();
     this.state = {
-      products : [
-        {
-          title : 'Mobile Phone',
-          price : 999,
-          qty : 0,
-          img : 'https://images.unsplash.com/photo-1591337676887-a217a6970a8a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80',
-          key : 1
-        },
-        {
-          title : 'Watch',
-          price : 99,
-          qty : 0,
-          img : 'https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=394&q=80',
-          key : 2
-        },
-        {
-          title : 'Headphone',
-          price : 9,
-          qty : 0,
-          img : 'https://images.unsplash.com/photo-1583394838336-acd977736f90?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=384&q=80',
-          key : 3
-        }
-      ]
-
+      products : [],
+      loading : true
     }          
+  }
+  componentDidMount(){
+    firebase
+      .firestore()
+      .collection('products')
+      //.get()
+      .onSnapshot((snapshot) => {// we are using .onSnapshot instead of .then because if there is changes in the firestore react should automaically listen to onSnapshot again.
+        //console.log(snapshot," this is it ");
+        // snapshot.docs.map((doc) => {
+        //   console.log(doc.data());
+        // })
+
+        const products = snapshot.docs.map((doc) => {
+          const data = doc.data();
+          data['id'] = doc.id;
+          return data;
+        })
+        this.setState({
+          products,
+          loading : false
+        })
+      })
   }
   increaseQuantity = (product) => {
     const products = this.state.products;
@@ -88,6 +89,7 @@ class App extends React.Component{
   }
 
   render(){
+    const {products, loading} = this.state;
     return (
       <div className="App">
         < Navbar
@@ -95,12 +97,13 @@ class App extends React.Component{
         />
         <h1>Cart</h1>
         < Cart
-          products = {this.state.products}
+          products = {products}
           increaseQuantity = {this.increaseQuantity} 
           decreaseQuantity = {this.decreaseQuantity} 
           deleteItem = {this.deleteItem}          
         />
         <div><h3>Total : {this.totalprice()}</h3></div>
+        {(loading && <h1>loading the content</h1>)}
       </div>
     );
   }
